@@ -1,3 +1,12 @@
+#Needs to be done
+- [ ] Fix vulnerabilities from Exercise 1
+- [ ] Fix vulnerabilites from [document](docs/vulnerabilites.html)
+- [ ] Extend application
+    - [ ] User can reset password
+    - [ ] User can upload and change profile picture
+
+
+
 
 # The Movie Review Webapp
 
