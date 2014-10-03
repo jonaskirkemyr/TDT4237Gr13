@@ -1,6 +1,6 @@
 #Needs to be done
 - [ ] Fix vulnerabilities from Exercise 1
-- [ ] Fix vulnerabilites from [document](docs/vulnerabilites.md)
+- [ ] Fix vulnerabilites from [document](docs/vulnerabilities.md)
 - [ ] Extend application
     - [ ] User can reset password
     - [ ] User can upload and change profile picture
