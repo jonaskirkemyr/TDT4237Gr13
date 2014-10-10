@@ -5,7 +5,6 @@ ini_set('display_errors', 'on');
 if (! extension_loaded('openssl')) {
     die('You must enable the openssl extension.');
 }
-
 session_cache_limiter(false);
 session_start();
 

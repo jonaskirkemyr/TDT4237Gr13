@@ -1,6 +1,5 @@
 <?php
 require_once __DIR__ . '/../vendor/autoload.php';
-
 $app = new \Slim\Slim([
     'templates.path' => __DIR__.'/webapp/templates/',
     'debug' => true,
@@ -14,10 +13,11 @@ $view->parserExtensions = array(
 
 try {
     // Create (connect to) SQLite database in file
-    $app->db = new PDO('sqlite:app.db');
+    $app->db = new PDO('sqlite:app.db');//make sure folder is writeable!
     // Set errormode to exceptions
     $app->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch(PDOException $e) {
+    //print_r($e);
     echo $e->getMessage();
     exit();
 }
