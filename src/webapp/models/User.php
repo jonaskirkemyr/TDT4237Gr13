@@ -6,9 +6,10 @@ use tdt4237\webapp\Hash;
 
 class User
 {
-    const INSERT_QUERY = "INSERT INTO users(user, pass, email, age, bio, isadmin) VALUES('%s', '%s', '%s' , '%s' , '%s', '%s')";
-    const UPDATE_QUERY = "UPDATE users SET email='%s', age='%s', bio='%s', isadmin='%s' WHERE id='%s'";
-    const FIND_BY_NAME = "SELECT * FROM users WHERE user='%s'";
+    const INSERT_QUERY = "INSERT INTO users(user, pass, email, age, bio, isadmin) VALUES(':user', ':pass', ':email' , ':age' , ':bio', ':isadmin')";
+    const UPDATE_QUERY = "UPDATE users SET email=':email', age=':age', bio=':bio', isadmin=':isadmin' WHERE id=':id'";
+    const FIND_BY_NAME = "SELECT * FROM users WHERE user=':user'";
+    const DEL_USER     = "DELETE FROM users WHERE user=':user'";
 
     const MIN_USER_LENGTH = 3;
 
@@ -177,22 +178,22 @@ class User
      * @return mixed User or null if not found.
      */
     static function findByUser($username)
-    {
-        $query = sprintf(self::FIND_BY_NAME, $username);
-        $result = self::$app->db->query($query, \PDO::FETCH_ASSOC);
-        $row = $result->fetch();
+    { 
+        $prepare=self::$app->db->prepare(self::FIND_BY_NAME,array(PDO::ATTR_CURSOR=>PDO::CURSOR_FWDONLY));
+        $prepare->execute(array(":user"=>$username));
 
-        if($row == false) {
+        $row=$prepare->fetch(PDO::FETCH_ASSOC);
+
+        if($row == false) 
             return null;
-        }
 
         return User::makeFromSql($row);
     }
 
     static function deleteByUsername($username)
     {
-        $query = "DELETE FROM users WHERE user='$username' ";
-        return self::$app->db->exec($query);
+        $prepare=self::$app->db->prepare(self::DEL_USER,array(PDO::ATTR_CURSOR=>PDO::CURSOR_FWDONLY));
+        return $prepare->execute(array(":user"=>$username));
     }
 
     static function all()

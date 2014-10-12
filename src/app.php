@@ -1,14 +1,17 @@
 <?php
+
+
 require_once __DIR__ . '/../vendor/autoload.php';
 $app = new \Slim\Slim([
     'templates.path' => __DIR__.'/webapp/templates/',
     'debug' => true,
-    'view' => new \Slim\Views\Twig()
+    'view' => new \Slim\Views\Twig(),
+    'log.level' => \Slim\Log::DEBUG
 ]);
 
 $view = $app->view();
 $view->parserExtensions = array(
-    new \Slim\Views\TwigExtension(),
+    new \Slim\Views\TwigExtension()
 );
 
 try {
@@ -22,13 +25,23 @@ try {
     exit();
 }
 
-$ns ='tdt4237\\webapp\\controllers\\'; 
+//$ns ='tdt4237\\webapp\\controllers\\';
+//$ns="\\src\\webapp\\controllers\\";
+//$ns="src\\webapp\\controllers\\";
+//$ns="\\src\\webapp\\controllers\\";
+//$ns="/src/webapp/controllers/";
+//$ns="";
+//
+$ns="tdt4237\\webapp\\controllers\\";
+
+//require __DIR__ . '/webapp/controllers/LoginController.php';
+//require __DIR__ . '/webapp/models/';
 
 // Home page at http://localhost/
 $app->get('/', $ns . 'IndexController:index');
 
 // Login form
-$app->get('/login', $ns . 'LoginController:index');
+$app->get('/login', $ns . 'LoginController:index')->name('login');
 $app->post('/login', $ns . 'LoginController:login');
 
 // New user
@@ -43,7 +56,7 @@ $app->post('/user/edit', $ns . 'UserController:edit');
 $app->get('/user/:username', $ns . 'UserController:show')->name('showuser');
 
 // Show all users
-$app->get('/users', $ns . 'UserController:all');
+$app->get('/users', $ns . 'UserController:all')->name('users');
 
 // Log out
 $app->get('/logout', $ns . 'UserController:logout')->name('logout');
@@ -56,5 +69,7 @@ $app->get('/admin/delete/:username', $ns . 'AdminController:delete');
 $app->get('/movies', $ns . 'MovieController:index')->name('movies');
 $app->get('/movies/:movieid', $ns . 'MovieController:show');
 $app->post('/movies/:movieid', $ns . 'MovieController:addReview');
+
+
 
 return $app;

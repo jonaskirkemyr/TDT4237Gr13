@@ -2,19 +2,19 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <link rel="stylesheet" href="../web/css/style.css"/>
+        <link rel="stylesheet" href="css/style.css"/>
 
         {% set titleVar = 'Movie Reviews' %}
 
         <title>{{ title|default(titleVar) }}</title>
-        <script src="../web/js/app.js"></script>
+        <script src="js/app.js"></script>
         <script>
         </script> 
     </head>
     <body>
         <div id="logo">
             <a href="/">
-                <img src="../web/images/Movie-Reel.jpg">
+                <img src="images/Movie-Reel.jpg">
                 <h1>{{ title|default(titleVar) }}</h1>
             </a>
         </div>
@@ -34,8 +34,8 @@
                 <br>
 
                 <a href="{{ urlFor('newuser') }}">Create user</a> <br />
-                <a href="/login">Login</a> <br>
-                <a href="/users">All users</a> <br>
+                <a href="{{ urlFor('login') }}">Login</a> <br>
+                <a href="{{ urlFor('users') }}">All users</a> <br>
                 <a href="{{ urlFor('movies') }}">Show all movies</a> <br />
 
             </div>
