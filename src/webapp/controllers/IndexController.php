@@ -14,7 +14,7 @@ class IndexController extends Controller
     function index()
     {
         $request = $this->app->request;
-        $msg = $request->get('msg');
+        $msg = Security::xss($request->get('msg'));
 
         $variables = [];
 

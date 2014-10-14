@@ -4,7 +4,10 @@ namespace tdt4237\webapp\models;
 
 class MovieReview
 {
-    const SELECT_BY_ID = "SELECT * FROM moviereviews WHERE id = %s";
+    const SELECT_BY_ID          = "SELECT * FROM moviereviews WHERE id = %s";//NOT USED?
+    const SELECT_BY_MOVIE_ID    = "SELECT * FROM moviereviews WHERE movieid=':id'";
+    const INSERT_REVIEW         = "INSERT INTO moviereviews(movieid,author,text) VALUES(':id',':author',':text')";
+    const UPDATE_REVIEW         = "UPDATE moviereviews SET author=':author', text=':text' WHERE movieid=':id'";
 
     private $id = null;
     private $movieId;
@@ -67,14 +70,34 @@ class MovieReview
         $author = $this->author;
         $text = $this->text;
 
-        if ($this->id === null) {
+        $prepare=null;
+        $array=null;
+
+
+
+        if ($this->id === null) 
+        {
+            $prepare=self::$app->db->prepare(self::INSERT_REVIEW,array(PDO::ATTR_CURSOR=>PDO::CURSOR_FWDONLY));
+            $array=array(
+                        ":id"       => $movieId,
+                        ":author"   => $author,
+                        ":text"     =>$text
+                        );
+
             $query = "INSERT INTO moviereviews (movieid, author, text) "
                    . "VALUES ('$movieId', '$author', '$text')";
-        } else {
-            // TODO: Update moviereview here
+        } 
+        else 
+        {
+            $prepare=self::$app->db->prepare(self::UPDATE_REVIEW,array(PDO::ATTR_CURSOR=>PDO::CURSOR_FWDONLY));
+            $array=array(
+                        ":author"   => $author,
+                        ":text"     => $text,
+                        ":id"       => $movieId
+                        );
         }
 
-        return static::$app->db->exec($query);
+        return $prepare->execute($array);
     }
 
     static function makeEmpty()
@@ -87,12 +110,13 @@ class MovieReview
      */
     static function findByMovieId($id)
     {
-        $query = "SELECT * FROM moviereviews WHERE movieid = $id";
-        $results = self::$app->db->query($query);
+        $prepare=self::$app->db->prepare(self::SELECT_BY_MOVIE_ID,array(PDO::ATTR_CURSOR=>PDO::CURSOR_FWDONLY)); 
+        $prepare->execute(array(":movieid"=>$id));  
 
         $reviews = [];
 
-        foreach ($results as $row) {
+        while($row=$prepare->fetch())
+        {
             $review = self::makeFromRow($row);
             array_push($reviews, $review);
         }
@@ -100,7 +124,8 @@ class MovieReview
         return $reviews;
     }
 
-    static function makeFromRow($row) {
+    static function makeFromRow($row) 
+    {
         $review = self::make(
             $row['id'],
             $row['author'],

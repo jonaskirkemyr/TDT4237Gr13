@@ -51,26 +51,38 @@ class User
      */
     function save()
     {
-        if ($this->id === null) {
-            $query = sprintf(self::INSERT_QUERY,
-                $this->user,
-                $this->pass,
-                $this->email,
-                $this->age,
-                $this->bio,
-                $this->isAdmin
+        $prepare=null;
+        $array=null;
+
+        if ($this->id === null) 
+        {
+
+            $prepare=self::$app->db->prepare(self::INSERT_QUERY,array(PDO::ATTR_CURSOR=>PDO::CURSOR_FWDONLY));
+            $array=array(
+                    ":user"     =>  $username,
+                    ":pass"     =>  $this->pass,
+                    ":email"    =>  $this->email,
+                    ":age"      =>  $this->age,
+                    ":bio"      =>  $this->bio,
+                    ":isadmin"  =>  $this->isAdmin
+                        );
             );
-        } else {
-            $query = sprintf(self::UPDATE_QUERY,
-                $this->email,
-                $this->age,
-                $this->bio,
-                $this->isAdmin,
-                $this->id
-            );
+        } 
+
+        else 
+        {
+            $prepare=self::$app->db->prepare(self::UPDATE_QUERY,array(PDO::ATTR_CURSOR=>PDO::CURSOR_FWDONLY));
+            $array=array(
+                    ":email"    =>  $this->email,
+                    ":age"      =>  $this->age,
+                    ":bio"      =>  $this->bio,
+                    ":isadmin"  =>  $this->isAdmin,
+                    ":id"       =>  $this->id
+                    
+                        );
         }
 
-        return self::$app->db->exec($query);
+        return $prepare->execute($array);
     }
 
     function getId()

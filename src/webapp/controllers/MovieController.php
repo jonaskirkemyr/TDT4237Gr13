@@ -29,6 +29,7 @@ class MovieController extends Controller
      */
     function show($id)
     {
+        $id=Security::xss($id);
         $this->render('showmovie.twig', [
             'movie' => Movie::find($id),
             'reviews' => MovieReview::findByMovieId($id)
@@ -37,8 +38,12 @@ class MovieController extends Controller
 
     function addReview($id)
     {
-        $author = Security::xss($this->app->request->post('author'));
-        $text = Security::xss($this->app->request->post('text'));
+        $id=Security::xss($id);
+
+        $request=$this->app->request;
+
+        $author = Security::xss($request->post('author'));
+        $text = Security::xss($request->post('text'));
 
         $review = MovieReview::makeEmpty();
         $review->setAuthor($author);

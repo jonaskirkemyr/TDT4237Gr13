@@ -65,6 +65,7 @@ class UserController extends Controller
 
     function show($username)//show
     {
+        $username=Securty::xss($username);
         $user = User::findByUser($username);
 
         $this->render('showuser.twig', [
