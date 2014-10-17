@@ -54,6 +54,17 @@ run phpinfo(), look for:
 Check that each of these packes is installed and enabled!
 
 
+###A2ENSITE
+When lookin gup the url
+
+	http://localhost/
+
+a user should be redirected to the web/ folder. To accomplish this run command:
+
+	sudo nano /etc/apache2/sites-available/000-default.conf
+
+and change the document root, by setting it to point to the web folder. 
+
 ##Using PDO
 to be able to use PDO commands, in each file ,at the top, you need to specify:
 	
