@@ -7,6 +7,11 @@
 
 
 
+#Install instructions CLEAR!
+[install](docs/install.md) install instructions for apache/php on Ubuntu. Windows have other install commands, but same settings!
+
+
+
 
 # The Movie Review Webapp
 
@@ -14,6 +19,7 @@ This is the webapp used for the course Software Security TDT4237
 at NTNU. Used for the first time in September 2014.
 Below is the guide to fetch code and deploy it so that the app
 can be browsed at [http://localhost:8080/](http://localhost:8080/).
+
 
 ## git
 
