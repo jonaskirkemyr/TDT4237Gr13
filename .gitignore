@@ -29,4 +29,3 @@ project
 *.sublime-project
 .idea
 *.idea/*
-sftp-config.json

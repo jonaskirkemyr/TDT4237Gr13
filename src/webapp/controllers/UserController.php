@@ -6,6 +6,8 @@ use tdt4237\webapp\models\User;
 use tdt4237\webapp\Hash;
 use tdt4237\webapp\Auth;
 
+use tdt4237\webapp\Security;
+
 class UserController extends Controller
 {
     function __construct()
@@ -24,11 +26,11 @@ class UserController extends Controller
         }
     }
 
-    function create()
+    function create()//create
     {
         $request = $this->app->request;
-        $username = $request->post('user');
-        $pass = $request->post('pass');
+        $username = Security::xss($request->post('user'));
+        $pass = Security::xss($request->post('pass'));
 
         $hashed = Hash::make($pass);
 
@@ -61,8 +63,9 @@ class UserController extends Controller
         $this->app->redirect('/?msg=Successfully logged out.');
     }
 
-    function show($username)
+    function show($username)//show
     {
+        $username=Securty::xss($username);
         $user = User::findByUser($username);
 
         $this->render('showuser.twig', [
@@ -71,33 +74,35 @@ class UserController extends Controller
         ]);
     }
 
-    function edit()
+    function edit()//sql
     {
-        if (Auth::guest()) {
+        if (Auth::guest()) 
+        {
             $this->app->flash('info', 'You must be logged in to edit your profile.');
             $this->app->redirect('/login');
             return;
         }
-
         $user = Auth::user();
 
-        if (! $user) {
+        if (! $user) 
             throw new \Exception("Unable to fetch logged in user's object from db.");
-        }
 
-        if ($this->app->request->isPost()) {
+        if ($this->app->request->isPost()) 
+        {
             $request = $this->app->request;
-            $email = $request->post('email');
-            $bio = $request->post('bio');
-            $age = $request->post('age');
+
+            $email=Security::xss($request->post('email'));
+            $bio=Security::xss($request->post('bio'));
+            $age=Security::xss($request->post('age'));
 
             $user->setEmail($email);
             $user->setBio($bio);
             $user->setAge($age);
 
-            if (! User::validateAge($user)) {
+            if (! User::validateAge($user)) 
                 $this->app->flashNow('error', 'Age must be between 0 and 150.');
-            } else {
+            else 
+            {
                 $user->save();
                 $this->app->flashNow('info', 'Your profile was successfully saved.');
             }

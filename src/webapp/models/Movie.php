@@ -1,9 +1,17 @@
 <?php
 
+
+
 namespace tdt4237\webapp\models;
+
+use PDO;
 
 class Movie
 {
+    const FIND_MOVIE    = "SELECT * FROM movies WHERE id=':id'";
+    const FIND_ALL      = "SELECT * FROM movies";
+
+
     private $id;
     private $name;
     private $imageUrl;
@@ -40,10 +48,11 @@ class Movie
      */
     static function find($id)
     {
-        $query = "SELECT * FROM movies WHERE id = $id";
-        $result = self::$app->db->query($query);
-
-        return self::makeFromRow($result->fetch());
+        $prepare=self::$app->db->prepare(self::FIND_MOVIE,array(PDO::ATTR_CURSOR=>PDO::CURSOR_FWDONLY));
+        $prepare->execute(array(":id"=>$id));
+        $row=$prepare->fetch(PDO::FETCH_ASSOC);
+        
+        return self::makeFromRow($row);
     }
 
     /**
@@ -51,12 +60,13 @@ class Movie
      */
     static function all()
     {
-        $query = "SELECT * FROM movies";
-        $results = self::$app->db->query($query);
+
+        $prepare=self::$app->db->prepare(self::FIND_ALL,array(PDO::ATTR_CURSOR=>PDO::CURSOR_FWDONLY));
+        $prepare->execute();
 
         $movies = [];
-
-        foreach ($results as $row) {
+        while($row=$prepare->fetch(PDO::FETCH_ASSOC))
+        {
             $movie = self::makeFromRow($row);
             array_push($movies, $movie);
         }

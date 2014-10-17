@@ -3,6 +3,7 @@
 namespace tdt4237\webapp\controllers;
 
 use tdt4237\webapp\Auth;
+use tdt4237\webapp\Security;
 
 class LoginController extends Controller
 {
@@ -25,8 +26,8 @@ class LoginController extends Controller
     function login()
     {
         $request = $this->app->request;
-        $user = $request->post('user');
-        $pass = $request->post('pass');
+        $user = Security::xss($request->post('user'));
+        $pass = Security::xss($request->post('pass'));
 
         if (Auth::checkCredentials($user, $pass)) {
             $_SESSION['user'] = $user;
