@@ -1,6 +1,7 @@
 <?php
 
 namespace tdt4237\webapp\models;
+use PDO;
 
 class MovieReview
 {

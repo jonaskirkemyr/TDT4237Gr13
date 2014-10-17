@@ -11,6 +11,6 @@ session_start();
 if (preg_match('/\.(?:png|jpg|jpeg|gif|txt|css|js)$/', $_SERVER["REQUEST_URI"]))
     return false; // serve the requested resource as-is.
 else {
-    $app = require __DIR__ . '/src/app.php';
+    $app = require __DIR__ . '/../src/app.php';
     $app->run();
 }

@@ -3,6 +3,7 @@
 namespace tdt4237\webapp\models;
 
 use tdt4237\webapp\Hash;
+use PDO;
 
 class User
 {
@@ -66,7 +67,7 @@ class User
                     ":bio"      =>  $this->bio,
                     ":isadmin"  =>  $this->isAdmin
                         );
-            );
+
         } 
 
         else 

@@ -1,6 +1,10 @@
 <?php
 
+
+
 namespace tdt4237\webapp\models;
+
+use PDO;
 
 class Movie
 {
@@ -56,6 +60,7 @@ class Movie
      */
     static function all()
     {
+
         $prepare=self::$app->db->prepare(self::FIND_ALL,array(PDO::ATTR_CURSOR=>PDO::CURSOR_FWDONLY));
         $prepare->execute();
 
