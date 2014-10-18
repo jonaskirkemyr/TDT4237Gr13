@@ -34,6 +34,8 @@ class LoginController extends Controller
 
             $isAdmin = Auth::user()->isAdmin();
 
+            session_regenerate_id();
+
             if ($isAdmin) {
                 setcookie("isadmin", "yes");
             } else {
