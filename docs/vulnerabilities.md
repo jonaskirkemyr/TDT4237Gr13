@@ -37,11 +37,11 @@
 
 ##CSRF
 
-- [ ] Login form
-- [ ] Edit user form
+- [x] Login form
+- [x] Edit user form
 - [ ] Logout link `http://localhost.no:8080/logout`
-- [ ] Create user form
-- [ ] Delete user `http://localhost:8080/admin/delete/bob`
+- [x] Create user form
+- [x] Delete user `http://localhost:8080/admin/delete/bob`
 - [ ] Add movie review `http://localhost:8080/movies/8`
 
 ##Authentication mechanisms
