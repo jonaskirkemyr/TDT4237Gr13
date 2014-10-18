@@ -48,7 +48,7 @@
 
 - [x] Session id in cookie is not regenerated after login to prevent session fixation
 - [x] Timing attack on the hash comparison because equals operator is used.
-- [ ] Cookie tampering allows normal users to become admin. On http://localhost:8080/admin with
+- [x] Cookie tampering allows normal users to become admin. On http://localhost:8080/admin with
 	- `document.cookie='isadmin=yes'`;
 - [x] Missing access control on the actual delete on `http://localhost:8080/admin/delete/<username>`
 

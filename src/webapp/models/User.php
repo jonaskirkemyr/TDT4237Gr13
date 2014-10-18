@@ -57,7 +57,6 @@ class User
 
         if ($this->id === null) 
         {
-            echo "null";
             $prepare=self::$app->db->prepare(self::INSERT_QUERY,array(PDO::ATTR_CURSOR=>PDO::CURSOR_FWDONLY));
             $array=array(
                     ":user"     =>  $this->user,
@@ -72,7 +71,6 @@ class User
 
         else 
         {
-            echo "not null";
             $prepare=self::$app->db->prepare(self::UPDATE_QUERY,array(PDO::ATTR_CURSOR=>PDO::CURSOR_FWDONLY));
             $array=array(
                     ":email"    =>  $this->email,
@@ -152,6 +150,21 @@ class User
     function setAge($age)
     {
         $this->age = $age;
+    }
+
+    /**
+    *    This function checks if the designated username had administrator privileges.
+    *    @param $username
+    *    @return true if admin privilege, false otherwise.
+    */
+    static function checkAdmin($username)
+    {
+        $user = Self::findByUser($username);
+        if($user->isAdmin == 1){
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
