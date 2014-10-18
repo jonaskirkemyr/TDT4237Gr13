@@ -2,12 +2,12 @@
 ##Secure password storage
 
 
-- [ ] The password is not salted to prevent parallell attack and precomputated/rainbow tables.
-- [ ] The password is not hashed iteratively with bcrypt/scrypt/PBKDF2.
-- [ ] Need better password policy. Short passwords must be disallowed.
-- [ ] Password leak in HTML comment on show user page
+- [x] The password is not salted to prevent parallell attack and precomputated/rainbow tables.
+- [x] The password is not hashed iteratively with bcrypt/scrypt/PBKDF2.
+- [x] Need better password policy. Short passwords must be disallowed.
+- [x] Password leak in HTML comment on show user page
 	- `http://localhost:8080/user/<username>`
-- [ ] Password input field should be type=password.
+- [x] Password input field should be type=password.
 
 
 ##SQL injections

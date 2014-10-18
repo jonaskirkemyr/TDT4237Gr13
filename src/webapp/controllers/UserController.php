@@ -8,8 +8,11 @@ use tdt4237\webapp\Auth;
 
 use tdt4237\webapp\Security;
 
+
 class UserController extends Controller
 {
+    const MIN_PW_LENGTH=6;
+
     function __construct()
     {
         parent::__construct();
@@ -32,6 +35,15 @@ class UserController extends Controller
         $username = Security::xss($request->post('user'));
         $pass = Security::xss($request->post('pass'));
 
+        if(strlen($pass)<self::MIN_PW_LENGTH)
+        {
+            $errors="Password too short. Needs to be at least ".self::MIN_PW_LENGTH." characters<br/>";
+            $this->app->flashNow('error', $errors);
+            $this->render('newUserForm.twig', ['username' => $username]);
+            return;
+        }
+
+
         $hashed = Hash::make($pass);
 
         $user = User::makeEmpty();
@@ -40,15 +52,20 @@ class UserController extends Controller
 
         $validationErrors = User::validate($user);
 
-        if (sizeof($validationErrors) > 0) {
+        if (sizeof($validationErrors) > 0) 
+        {
             $errors = join("<br>\n", $validationErrors);
             $this->app->flashNow('error', $errors);
             $this->render('newUserForm.twig', ['username' => $username]);
-        } else {
+        } 
+
+        else 
+        {
             $user->save();
             $this->app->flash('info', 'Thanks for creating a user. Now log in.');
             $this->app->redirect('/login');
         }
+        return;
     }
 
     function all()
@@ -65,8 +82,11 @@ class UserController extends Controller
 
     function show($username)//show
     {
-        $username=Securty::xss($username);
+        $username=Security::xss($username);
         $user = User::findByUser($username);
+
+        if(!$user)
+              $this->app->redirect('/users');
 
         $this->render('showuser.twig', [
             'user' => $user,

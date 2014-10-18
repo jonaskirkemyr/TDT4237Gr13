@@ -4,6 +4,8 @@ namespace tdt4237\webapp\controllers;
 use tdt4237\webapp\Auth;
 use tdt4237\webapp\models\User;
 
+use tdt4237\webapp\Security;
+
 class AdminController extends Controller
 {
     function __construct()
@@ -64,7 +66,7 @@ class AdminController extends Controller
         if(User::deleteByUsername($username) === 1) 
             $this->app->flash('info', "Sucessfully deleted '$username'");
         else
-            $this->app->flash('info', "An error ocurred. Unable to delete user '$username'.");
+            $this->app->flash('info', "An error ocurred. Unable to delete user.");
         
 
         $this->app->redirect('/admin');
