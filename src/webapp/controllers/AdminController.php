@@ -29,7 +29,7 @@ class AdminController extends Controller
         if(!$this->checkLogin())
         {
             $this->app->flash('info', "Not authorized");
-            $this->app->redirect('/');
+            $this->app->redirect('/login');
             return false;
         }
     }
@@ -51,12 +51,16 @@ class AdminController extends Controller
         }
 
         $variables = [
-                        'users' => User::all()
+                        'users' => User::all(),
+                        "csrf"=>(object)array(
+                                            "id"=>Security::tokenID(),
+                                            "value"=>Security::tokenValue()
+                                        )
                     ];
         $this->render('admin.twig', $variables);
     }
 
-    function delete($username)
+    /*function delete($username)
     {
 
         $this->redirectUser();
@@ -70,5 +74,25 @@ class AdminController extends Controller
         
 
         $this->app->redirect('/admin');
-    }
+    }*/
+
+    function delete()
+    {
+        $request = $this->app->request;
+        $this->redirectUser();
+
+        echo "<script>console.log('meh');</script>";
+
+        if($request->post("delUser")===null) $this->app->redirect('/login');
+
+        $username=Security::xss($request->post("delUser"));
+
+        if(User::deleteByUsername($username) === 1) 
+            $this->app->flash('info', "Sucessfully deleted '$username'");
+        else
+            $this->app->flash('info', "An error ocurred. Unable to delete user.");
+        
+    
+        $this->app->redirect('/admin');
+    }   
 }

@@ -63,9 +63,10 @@ $app->get('/logout', $ns . 'UserController:logout')->name('logout');
 
 // Admin restricted area
 $app->get('/admin', $ns . 'AdminController:index')->name('admin');
-$app->get('/admin/delete/:username', $ns . 'AdminController:delete');
+$app->post("/admin",$ns."AdminController:delete");
+//$app->get('/admin/delete/:username', $ns . 'AdminController:delete');
 
-// Movies
+// Movies 
 $app->get('/movies', $ns . 'MovieController:index')->name('movies');
 $app->get('/movies/:movieid', $ns . 'MovieController:show');
 $app->post('/movies/:movieid', $ns . 'MovieController:addReview');
