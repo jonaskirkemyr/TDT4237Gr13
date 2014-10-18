@@ -13,6 +13,7 @@ class User
     const DEL_USER     = "DELETE FROM users WHERE user=:user";
 
     const MIN_USER_LENGTH = 3;
+    const MAX_USER_LENGTH = 20;
 
     protected $id = null;
     protected $user;
@@ -182,8 +183,16 @@ class User
             array_push($validationErrors, "Username too short. Min length is " . self::MIN_USER_LENGTH);
         }
 
+        if(strlen($user->user) > self::MAX_USER_LENGTH) {
+            array_push($validationErrors, "Username is too long. Max length is " . self::MAX_USER_LENGTH);
+        }
+
         if (preg_match('/^[A-Za-z0-9_]+$/', $user->user) === 0) {
             array_push($validationErrors, 'Username can only contain letters and numbers');
+        }
+
+        if (User::findByUser($user->user) != null) {
+            array_push($validationErrors, 'Username is already taken');
         }
 
         return $validationErrors;
