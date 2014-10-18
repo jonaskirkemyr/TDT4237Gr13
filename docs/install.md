@@ -83,5 +83,17 @@ By only using
 and then navigation to the different links, a 404 message is thrown. 
 
 ###Fix
-create HTACCESS file, that automatically redirects to index.php
+create HTACCESS file, that automatically redirects to index.php. Inside .htaccess add:
 
+	RewriteEngine On 
+	RewriteCond %{REQUEST_FILENAME} !-f 
+	RewriteRule ^(.*)$ %{ENV:BASE}index.php [QSA,L]
+
+
+For .htaccess files to work in ubuntu:
+
+	sudo a2enmod rewrite
+
+Then restart apache
+
+	sudo /etc/init.d/apache2 restart

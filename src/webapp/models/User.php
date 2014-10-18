@@ -7,10 +7,10 @@ use PDO;
 
 class User
 {
-    const INSERT_QUERY = "INSERT INTO users(user, pass, email, age, bio, isadmin) VALUES(':user', ':pass', ':email' , ':age' , ':bio', ':isadmin')";
-    const UPDATE_QUERY = "UPDATE users SET email=':email', age=':age', bio=':bio', isadmin=':isadmin' WHERE id=':id'";
-    const FIND_BY_NAME = "SELECT * FROM users WHERE user=':user'";
-    const DEL_USER     = "DELETE FROM users WHERE user=':user'";
+    const INSERT_QUERY = "INSERT INTO users(user, pass, email, age, bio, isadmin) VALUES(:user, :pass, :email , :age , :bio, :isadmin);";
+    const UPDATE_QUERY = "UPDATE users SET email=:email, age=:age, bio=:bio, isadmin=:isadmin WHERE id=:id";
+    const FIND_BY_NAME = "SELECT * FROM users WHERE user=:user";
+    const DEL_USER     = "DELETE FROM users WHERE user=:user";
 
     const MIN_USER_LENGTH = 3;
 
@@ -57,10 +57,10 @@ class User
 
         if ($this->id === null) 
         {
-
+            echo "null";
             $prepare=self::$app->db->prepare(self::INSERT_QUERY,array(PDO::ATTR_CURSOR=>PDO::CURSOR_FWDONLY));
             $array=array(
-                    ":user"     =>  $username,
+                    ":user"     =>  $this->user,
                     ":pass"     =>  $this->pass,
                     ":email"    =>  $this->email,
                     ":age"      =>  $this->age,
@@ -72,6 +72,7 @@ class User
 
         else 
         {
+            echo "not null";
             $prepare=self::$app->db->prepare(self::UPDATE_QUERY,array(PDO::ATTR_CURSOR=>PDO::CURSOR_FWDONLY));
             $array=array(
                     ":email"    =>  $this->email,
@@ -83,7 +84,9 @@ class User
                         );
         }
 
+
         return $prepare->execute($array);
+
     }
 
     function getId()
