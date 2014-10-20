@@ -20,9 +20,12 @@ class UserController extends Controller
 
     function index()
     {
-        if (Auth::guest()) {
-            $this->render('newUserForm.twig', []);
-        } else {
+        if (Auth::guest()) 
+        {
+            $this->render('newUserForm.twig');
+        } 
+        else 
+        {
             $username = Auth::user()->getUserName();
             $this->app->flash('info', 'You are already logged in as ' . $username);
             $this->app->redirect('/');
@@ -35,14 +38,6 @@ class UserController extends Controller
         $username = Security::xss($request->post('user'));
         $pass = Security::xss($request->post('pass'));
 
-        if(strlen($pass)<self::MIN_PW_LENGTH)
-        {
-            $errors="Password too short. Needs to be at least ".self::MIN_PW_LENGTH." characters<br/>";
-            $this->app->flashNow('error', $errors);
-            $this->render('newUserForm.twig', ['username' => $username]);
-            return;
-        }
-
 
         $hashed = Hash::make($pass);
 
@@ -52,11 +47,20 @@ class UserController extends Controller
 
         $validationErrors = User::validate($user);
 
-        if (sizeof($validationErrors) > 0) 
+        if (sizeof($validationErrors) > 0 || !Security::checkForm($request) || strlen($pass)<self::MIN_PW_LENGTH) 
         {
-            $errors = join("<br>\n", $validationErrors);
+            if(sizeof($validationErrors) > 0)
+                $errors = join("<br>\n", $validationErrors);
+            else if(!Security::checkForm($request))
+                $errors="";
+            else if(strlen($pass)<self::MIN_PW_LENGTH)
+                $errors="Password too short. Needs to be at least ".self::MIN_PW_LENGTH." characters<br/>";
+
+            
             $this->app->flashNow('error', $errors);
-            $this->render('newUserForm.twig', ['username' => $username]);
+            $this->render('newUserForm.twig', [
+                                                'username' => $username
+                                                ]);
         } 
 
         else 
@@ -76,8 +80,13 @@ class UserController extends Controller
 
     function logout()
     {
-        Auth::logout();
-        $this->app->redirect('/?msg=Successfully logged out.');
+        $redirect="/";
+        if(Security::checkForm($this->app->request) && $this->app->request->isPost())
+        {
+            $this->app->flash('info', "Successfully logged out.");
+            Auth::logout();
+        }
+        $this->app->redirect($redirect);
     }
 
     function show($username)//show
@@ -104,10 +113,10 @@ class UserController extends Controller
         }
         $user = Auth::user();
 
-        if (! $user) 
+        if (!$user) 
             throw new \Exception("Unable to fetch logged in user's object from db.");
 
-        if ($this->app->request->isPost()) 
+        if (Security::checkForm($this->app->request) && $this->app->request->isPost()) 
         {
             $request = $this->app->request;
 
@@ -128,6 +137,9 @@ class UserController extends Controller
             }
         }
 
-        $this->render('edituser.twig', ['user' => $user]);
+        $this->render('edituser.twig', [
+                                        'user' => $user
+                                    
+                                        ]);
     }
 }

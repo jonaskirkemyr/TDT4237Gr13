@@ -14,12 +14,15 @@ class LoginController extends Controller
 
     function index()
     {
-        if (Auth::check()) {
+        if (Auth::check()) 
+        {
             $username = Auth::user()->getUserName();
             $this->app->flash('info', 'You are already logged in as ' . $username);
             $this->app->redirect('/');
-        } else {
-            $this->render('login.twig', []);
+        } 
+        else 
+        {
+            $this->render('login.twig');
         }
     }
 
@@ -29,16 +32,24 @@ class LoginController extends Controller
         $user = Security::xss($request->post('user'));
         $pass = Security::xss($request->post('pass'));
 
-        if (Auth::checkCredentials($user, $pass)) {
+
+
+        if(Security::checkForm($request) && Auth::checkCredentials($user, $pass)) 
+        {
             $_SESSION['user'] = $user;
 
             $isAdmin = Auth::user()->isAdmin();
 
-            session_regenerate_id(true);
+            session_regenerate_id(true);//regenerate token and session of each login
+            Security::unsetToken();
 
             $this->app->flash('info', "You are now successfully logged in as $user.");
             $this->app->redirect('/');
-        } else {
+        } 
+
+        else 
+        {
+            Security::unsetToken();
             $this->app->flashNow('error', 'Incorrect user/pass combination.');
             $this->render('login.twig', []);
         }

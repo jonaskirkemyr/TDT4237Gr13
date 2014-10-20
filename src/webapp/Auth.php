@@ -5,6 +5,8 @@ namespace tdt4237\webapp;
 use tdt4237\webapp\models\User;
 use tdt4237\webapp\Hash;
 
+use tdt4237\webapp\Security;
+
 class Auth
 {
     function __construct()
@@ -64,6 +66,8 @@ class Auth
 
     static function logout()
     {
+        unset($_SESSION["user"]);
+        Security::unsetToken();
         session_destroy();
     }
 }

@@ -39,10 +39,10 @@
 
 - [x] Login form
 - [x] Edit user form
-- [ ] Logout link `http://localhost.no:8080/logout`
+- [x] Logout link `http://localhost.no:8080/logout`
 - [x] Create user form
 - [x] Delete user `http://localhost:8080/admin/delete/bob`
-- [ ] Add movie review `http://localhost:8080/movies/8`
+- [x] Add movie review `http://localhost:8080/movies/8`
 
 ##Authentication mechanisms
 
@@ -60,6 +60,7 @@
 	curl 'http://localhost:8080/user/new' --data "user=$a&amp;pass=&amp;submit=Create+new+user"`
 
 	(Note from Alex) I think I fixed this. I added a max_name_length in User.php, so it validates for that alongside the minimum. Is that all that should be done?
+	(Jonas) Looks great :) that's all that should be done. But I also added a html validation (it's no problem to go pass this validation tough..) but validation is now both on client&server side.
 
 
 #General other stuff

@@ -6,6 +6,8 @@ use tdt4237\webapp\models\Movie;
 use tdt4237\webapp\models\MovieReview;
 use tdt4237\webapp\Auth;
 
+use tdt4237\webapp\Security;
+
 class MovieController extends Controller
 {
     function __construct()
@@ -41,6 +43,12 @@ class MovieController extends Controller
         $id=Security::xss($id);
 
         $request=$this->app->request;
+
+        if(Security::checkForm($this->app->request) && $this->app->request->isPost())
+        {
+            $this->app->redirect('/movies/' . $id);
+            return;
+        }
 
         $author = Security::xss($request->post('author'));
         $text = Security::xss($request->post('text'));

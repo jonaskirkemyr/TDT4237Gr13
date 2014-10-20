@@ -10,9 +10,12 @@
 <form action="" method="POST">
 
 <label>Username: </label>
-<input type="text" name="user" value="{{ username|raw }}"> <br />
+<input type="text" name="user" value="{{ username|raw }}" pattern=".{3,20}" title="Username must be between 3 - 20 charachters" required> <br />
 <label>Password: </label>
 <input type="password" name="pass"> <br />
+
+<input type='hidden' name='{{csrf.id}}' value='{{csrf.value}}'/>
+
 <input type="submit" name="submit" value="Create new user">
 </form>
 {% endblock %}

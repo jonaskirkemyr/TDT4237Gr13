@@ -6,9 +6,9 @@ use PDO;
 class MovieReview
 {
     const SELECT_BY_ID          = "SELECT * FROM moviereviews WHERE id = %s";//NOT USED?
-    const SELECT_BY_MOVIE_ID    = "SELECT * FROM moviereviews WHERE movieid=':id'";
-    const INSERT_REVIEW         = "INSERT INTO moviereviews(movieid,author,text) VALUES(':id',':author',':text')";
-    const UPDATE_REVIEW         = "UPDATE moviereviews SET author=':author', text=':text' WHERE movieid=':id'";
+    const SELECT_BY_MOVIE_ID    = "SELECT * FROM moviereviews WHERE movieid=:id";
+    const INSERT_REVIEW         = "INSERT INTO moviereviews(movieid,author,text) VALUES(:id,:author,:text)";
+    const UPDATE_REVIEW         = "UPDATE moviereviews SET author=:author, text=:text WHERE movieid=:id";
 
     private $id = null;
     private $movieId;
@@ -112,7 +112,7 @@ class MovieReview
     static function findByMovieId($id)
     {
         $prepare=self::$app->db->prepare(self::SELECT_BY_MOVIE_ID,array(PDO::ATTR_CURSOR=>PDO::CURSOR_FWDONLY)); 
-        $prepare->execute(array(":movieid"=>$id));  
+        $prepare->execute(array(":id"=>$id));  
 
         $reviews = [];
 
