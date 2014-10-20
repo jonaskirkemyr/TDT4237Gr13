@@ -46,18 +46,20 @@
 
 ##Authentication mechanisms
 
-- [ ] Session id in cookie is not regenerated after login to prevent session fixation
-- [ ] Timing attack on the hash comparison because equals operator is used.
-- [ ] Cookie tampering allows normal users to become admin. On http://localhost:8080/admin with
+- [x] Session id in cookie is not regenerated after login to prevent session fixation
+- [x] Timing attack on the hash comparison because equals operator is used.
+- [x] Cookie tampering allows normal users to become admin. On http://localhost:8080/admin with
 	- `document.cookie='isadmin=yes'`;
-- [ ] Missing access control on the actual delete on `http://localhost:8080/admin/delete/<username>`
+- [x] Missing access control on the actual delete on `http://localhost:8080/admin/delete/<username>`
 
 
 ##Data validation
 
-- [ ] Username can be arbitrarily long.
+- [x] Username can be arbitrarily long.
 	- `a=$(php -r 'print str_repeat("A", 1000);')
 	curl 'http://localhost:8080/user/new' --data "user=$a&amp;pass=&amp;submit=Create+new+user"`
+
+	(Note from Alex) I think I fixed this. I added a max_name_length in User.php, so it validates for that alongside the minimum. Is that all that should be done?
 
 
 #General other stuff
@@ -65,3 +67,9 @@
 - [ ] The webapp should be served entirely over TLS. All requests towards HTTP should redirect to HTTPS. HSTS and secure cookie flag should be on. This requires additional hassle with configuration so students do not have to actually configure TLS. But it should be mentioned.
 - [ ] Missing throttling and IP bans on excessive requests towards forms.
 - [ ] The Slim debug variable should be set to false to minimize leakage of useful info, (e.g. system paths and technology stack).
+
+
+## Group 13 bugs/fixes
+- [x] Prevent creation of duplicate usernames.
+- [ ] Set all error reportings to low. Create custom error pages?
+	- DO THIS AFTER REST IS DONE! Error checking is helpful while we're coding.

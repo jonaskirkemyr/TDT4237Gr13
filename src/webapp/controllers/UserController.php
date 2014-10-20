@@ -38,7 +38,7 @@ class UserController extends Controller
         }
     }
 
-    function create()//create
+    function create()
     {
         $request = $this->app->request;
         $username = Security::xss($request->post('user'));

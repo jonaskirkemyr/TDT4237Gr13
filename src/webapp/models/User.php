@@ -13,6 +13,7 @@ class User
     const DEL_USER     = "DELETE FROM users WHERE user=:user";
 
     const MIN_USER_LENGTH = 3;
+    const MAX_USER_LENGTH = 20;
 
     protected $id = null;
     protected $user;
@@ -57,7 +58,6 @@ class User
 
         if ($this->id === null) 
         {
-            echo "null";
             $prepare=self::$app->db->prepare(self::INSERT_QUERY,array(PDO::ATTR_CURSOR=>PDO::CURSOR_FWDONLY));
             $array=array(
                     ":user"     =>  $this->user,
@@ -72,7 +72,6 @@ class User
 
         else 
         {
-            echo "not null";
             $prepare=self::$app->db->prepare(self::UPDATE_QUERY,array(PDO::ATTR_CURSOR=>PDO::CURSOR_FWDONLY));
             $array=array(
                     ":email"    =>  $this->email,
@@ -155,6 +154,21 @@ class User
     }
 
     /**
+    *    This function checks if the designated username had administrator privileges.
+    *    @param $username
+    *    @return true if admin privilege, false otherwise.
+    */
+    static function checkAdmin($username)
+    {
+        $user = Self::findByUser($username);
+        if($user->isAdmin == 1){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * The caller of this function can check the length of the returned 
      * array. If array length is 0, then all checks passed.
      *
@@ -169,8 +183,16 @@ class User
             array_push($validationErrors, "Username too short. Min length is " . self::MIN_USER_LENGTH);
         }
 
+        if(strlen($user->user) > self::MAX_USER_LENGTH) {
+            array_push($validationErrors, "Username is too long. Max length is " . self::MAX_USER_LENGTH);
+        }
+
         if (preg_match('/^[A-Za-z0-9_]+$/', $user->user) === 0) {
             array_push($validationErrors, 'Username can only contain letters and numbers');
+        }
+
+        if (User::findByUser($user->user) != null) {
+            array_push($validationErrors, 'Username is already taken');
         }
 
         return $validationErrors;
