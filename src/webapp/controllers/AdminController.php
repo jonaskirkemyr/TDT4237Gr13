@@ -51,11 +51,7 @@ class AdminController extends Controller
         }
 
         $variables = [
-                        'users' => User::all(),
-                        "csrf"=>(object)array(
-                                            "id"=>Security::tokenID(),
-                                            "value"=>Security::tokenValue()
-                                        )
+                        'users' => User::all()
                     ];
         $this->render('admin.twig', $variables);
     }

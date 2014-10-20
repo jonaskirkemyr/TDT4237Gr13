@@ -3,6 +3,8 @@ body {
     background-color: #EDEDED;
     line-height: 1.5em;
     margin: 0;
+    font-family: serif !important;
+    font-size:14px;
 }
 
 a:link {
@@ -14,11 +16,13 @@ a:visited {
       color: #D64078;
 }
 
-a:hover {
+a:hover,.logout button:hover
+{
       text-decoration: underline;
 }
 
-a:active {
+a:active,.logout button:active 
+{
     background-color: black;
     color: white;
 }
@@ -69,4 +73,21 @@ label {
 .review {
     border: 1px solid gray;
     margin: 10px;
+}
+
+
+.logout button
+{
+    outline:0;
+    background:none;
+    border:0;
+    color:#D64078;
+    padding:0;
+    text-decoration: none;
+    text-align:left;
+
+    font-family: serif !important;
+    font-style: normal;
+    font-size:14px;
+
 }

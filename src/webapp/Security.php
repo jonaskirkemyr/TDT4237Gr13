@@ -62,6 +62,7 @@ class Security
     	return false;
     }
 
+
     static function unsetToken()
     {
     	unset($_SESSION["rtoken"]);

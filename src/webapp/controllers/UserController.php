@@ -22,13 +22,7 @@ class UserController extends Controller
     {
         if (Auth::guest()) 
         {
-            $this->render('newUserForm.twig', 
-                [
-                "csrf"=>(object)array(
-                                        "id"=>Security::tokenID(),
-                                        "value"=>Security::tokenValue()
-                                        )
-                ]);
+            $this->render('newUserForm.twig');
         } 
         else 
         {
@@ -65,11 +59,7 @@ class UserController extends Controller
             
             $this->app->flashNow('error', $errors);
             $this->render('newUserForm.twig', [
-                                                'username' => $username,
-                                                "csrf"=>(object)array(
-                                                                        "id"=>Security::tokenID(),
-                                                                        "value"=>Security::tokenValue()
-                                                                    )
+                                                'username' => $username
                                                 ]);
         } 
 
@@ -90,8 +80,13 @@ class UserController extends Controller
 
     function logout()
     {
-        Auth::logout();
-        $this->app->redirect('/?msg=Successfully logged out.');
+        $redirect="/";
+        if(Security::checkForm($this->app->request) && $this->app->request->isPost())
+        {
+            $this->app->flash('info', "Successfully logged out.");
+            Auth::logout();
+        }
+        $this->app->redirect($redirect);
     }
 
     function show($username)//show
@@ -143,11 +138,8 @@ class UserController extends Controller
         }
 
         $this->render('edituser.twig', [
-                                        'user' => $user, 
-                                        "csrf"=>(object)array(
-                                                            "id"=>Security::tokenID(),
-                                                            "value"=>Security::tokenValue()
-                                                            )
+                                        'user' => $user
+                                    
                                         ]);
     }
 }

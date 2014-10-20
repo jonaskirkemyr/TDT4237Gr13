@@ -37,7 +37,7 @@ $ns="tdt4237\\webapp\\controllers\\";
 //require __DIR__ . '/webapp/controllers/LoginController.php';
 //require __DIR__ . '/webapp/models/';
 
-// Home page at http://localhost/
+// Home page at http://localhost/ 
 $app->get('/', $ns . 'IndexController:index');
 
 // Login form
@@ -59,7 +59,8 @@ $app->get('/user/:username', $ns . 'UserController:show')->name('showuser');
 $app->get('/users', $ns . 'UserController:all')->name('users');
 
 // Log out
-$app->get('/logout', $ns . 'UserController:logout')->name('logout');
+$app->post('/', $ns . 'UserController:logout')->name("logout");
+//$app->get('/logout/:test', $ns . 'UserController:logout')->name('logout');
 
 // Admin restricted area
 $app->get('/admin', $ns . 'AdminController:index')->name('admin');

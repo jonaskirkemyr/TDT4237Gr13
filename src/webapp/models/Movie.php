@@ -8,7 +8,7 @@ use PDO;
 
 class Movie
 {
-    const FIND_MOVIE    = "SELECT * FROM movies WHERE id=':id'";
+    const FIND_MOVIE    = "SELECT * FROM movies WHERE id=:id";
     const FIND_ALL      = "SELECT * FROM movies";
 
 

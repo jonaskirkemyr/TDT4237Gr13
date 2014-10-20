@@ -22,12 +22,7 @@ class LoginController extends Controller
         } 
         else 
         {
-            $this->render('login.twig', [
-                                        "csrf"=>(object)array(
-                                                            "id"=>Security::tokenID(),
-                                                            "value"=>Security::tokenValue()
-                                                            )
-                                        ]);
+            $this->render('login.twig');
         }
     }
 
@@ -39,13 +34,14 @@ class LoginController extends Controller
 
 
 
-        if (Security::checkForm($request) && Auth::checkCredentials($user, $pass)) 
+        if(Security::checkForm($request) && Auth::checkCredentials($user, $pass)) 
         {
             $_SESSION['user'] = $user;
 
             $isAdmin = Auth::user()->isAdmin();
 
-            session_regenerate_id(true);
+            session_regenerate_id(true);//regenerate token and session of each login
+            Security::unsetToken();
 
             $this->app->flash('info', "You are now successfully logged in as $user.");
             $this->app->redirect('/');
