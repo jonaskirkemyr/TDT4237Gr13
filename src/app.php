@@ -25,17 +25,9 @@ try {
     exit();
 }
 
-//$ns ='tdt4237\\webapp\\controllers\\';
-//$ns="\\src\\webapp\\controllers\\";
-//$ns="src\\webapp\\controllers\\";
-//$ns="\\src\\webapp\\controllers\\";
-//$ns="/src/webapp/controllers/";
-//$ns="";
-//
+
 $ns="tdt4237\\webapp\\controllers\\";
 
-//require __DIR__ . '/webapp/controllers/LoginController.php';
-//require __DIR__ . '/webapp/models/';
 
 // Home page at http://localhost/ 
 $app->get('/', $ns . 'IndexController:index');

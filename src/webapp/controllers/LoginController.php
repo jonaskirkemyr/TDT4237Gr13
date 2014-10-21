@@ -32,7 +32,21 @@ class LoginController extends Controller
         $user = Security::xss($request->post('user'));
         $pass = Security::xss($request->post('pass'));
 
-
+        if(isset($_SESSION["login_attempts"])){
+        	$current_time = time();
+        	$old_login_attempts = $_SESSION["login_attempts"];
+        	$new_login_attempts = array($old_login_attempts[1], $old_login_attempts[2], $current_time);
+        	$_SESSION["login_attempts"] = $new_login_attempts;
+        	if( (($current_time - $old_login_attempts[0]) < 30) && 
+        		(($current_time - $old_login_attempts[1]) < 30) && 
+        		(($current_time - $old_login_attempts[2]) < 30) ){
+        			$this->app->flash('error', 'Too many login attempts! Please wait.');
+           			$this->app->redirect('/login');
+        	}
+        } else {
+        	$login_attempts = array(time(), 0, 0);
+        	$_SESSION["login_attempts"] = $login_attempts;
+        }
 
         if(Security::checkForm($request) && Auth::checkCredentials($user, $pass)) 
         {

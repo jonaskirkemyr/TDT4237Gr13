@@ -59,14 +59,10 @@
 	- `a=$(php -r 'print str_repeat("A", 1000);')
 	curl 'http://localhost:8080/user/new' --data "user=$a&amp;pass=&amp;submit=Create+new+user"`
 
-	(Note from Alex) I think I fixed this. I added a max_name_length in User.php, so it validates for that alongside the minimum. Is that all that should be done?
-	(Jonas) Looks great :) that's all that should be done. But I also added a html validation (it's no problem to go pass this validation tough..) but validation is now both on client&server side.
-
-
 #General other stuff
 
 - [ ] The webapp should be served entirely over TLS. All requests towards HTTP should redirect to HTTPS. HSTS and secure cookie flag should be on. This requires additional hassle with configuration so students do not have to actually configure TLS. But it should be mentioned.
-- [ ] Missing throttling and IP bans on excessive requests towards forms.
+- [x] Missing throttling and IP bans on excessive requests towards forms.
 - [ ] The Slim debug variable should be set to false to minimize leakage of useful info, (e.g. system paths and technology stack).
 
 

@@ -43,13 +43,29 @@ class MovieController extends Controller
         $id=Security::xss($id);
 
         $request=$this->app->request;
+        if(isset($_SESSION["posts"])){
+            $current_time = time();
+            $old_login_attempts = $_SESSION["posts"];
+            $new_login_attempts = array($old_login_attempts[1], $current_time);
+            $_SESSION["posts"] = $new_login_attempts;
+            if( (($current_time - $old_login_attempts[0]) < 30) && 
+                (($current_time - $old_login_attempts[1]) < 30)){
+                    $this->app->flash('info', 'Posting too many times! Please wait.');
+                    $this->app->redirect('/movies/' . $id);
+            }
+        } else {
+            $login_attempts = array(time(), 0);
+            $_SESSION["posts"] = $login_attempts;
+        }
 
-        if(Security::checkForm($this->app->request) && $this->app->request->isPost())
+        if(!Security::checkForm($this->app->request) && !$this->app->request->isPost())
         {
+            printf("test");
             $this->app->redirect('/movies/' . $id);
             return;
         }
 
+        $request = $this->app->request;
         $author = Security::xss($request->post('author'));
         $text = Security::xss($request->post('text'));
 
