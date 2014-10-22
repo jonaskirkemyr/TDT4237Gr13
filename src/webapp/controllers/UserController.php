@@ -122,15 +122,48 @@ class UserController extends Controller
             $email=Security::xss($request->post('email'));
             $bio=Security::xss($request->post('bio'));
             $age=Security::xss($request->post('age'));
+            
+            // Code for image upload.
+            $uploadImage = 0;
+            $imageFail = 0;
+            // See if they want to upload an image.
+            if(!empty($_FILES['image']['name'])){
+                // Ensure that the image is acceptable.
+                if($_FILES['image']['error'] !== UPLOAD_ERR_OK){
+                    $imageFail = 1;
+                } else {
+                    $fileInfo = getimagesize($_FILES['image']['tmp_name']);
+                    if($fileInfo === FALSE){
+                        $imageFail = 1;
+                    } else {
+                        if(($fileInfo[2] !== IMAGETYPE_JPEG) && ($fileInfo[2] !== IMAGETYPE_PNG)){
+                            $imageFail = 1;
+                        } else {
+                            // If acceptable, copy it over with our own name to avoid problems.
+                            $target_dir = "web/images/profiles/";
+                            $file = explode(".", $_FILES['image']['name']);
+                            $extension  = end($file);
+                            $target_dir = $target_dir . $user->getUserName() . "." . $extension;
+                            $user->setImage(Security::xss($user->getUserName() . "." . $extension));  
+                            $uploadImage = 1; 
+                        }
+                    }
+                }   
+            }
 
             $user->setEmail($email);
             $user->setBio($bio);
             $user->setAge($age);
 
-            if (! User::validateAge($user)) 
+            if (! User::validateAge($user)) {
                 $this->app->flashNow('error', 'Age must be between 0 and 150.');
             else if(!empty($email) && !User::validateEmail($user))
                 $this->app->flashNow('error', "Email isn't valid.");
+            elseif($uploadImage && !move_uploaded_file($_FILES["image"]["tmp_name"], $target_dir)){
+                $this->app->flashNow('error', 'Error in image upload.');
+            } elseif($imageFail){
+                $this->app->flashNow('error', 'Error in image upload. Image must be small and in PNG or JPEG format.');
+            }
             else 
             {
                 $user->save();
