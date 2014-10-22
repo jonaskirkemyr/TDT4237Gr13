@@ -62,7 +62,6 @@ class UserController extends Controller
                                                 'username' => $username
                                                 ]);
         } 
-
         else 
         {
             $user->save();
@@ -83,8 +82,8 @@ class UserController extends Controller
         $redirect="/";
         if(Security::checkForm($this->app->request) && $this->app->request->isPost())
         {
-            $this->app->flash('info', "Successfully logged out.");
             Auth::logout();
+            $this->app->flash('info', "Successfully logged out.");
         }
         $this->app->redirect($redirect);
     }
@@ -130,6 +129,8 @@ class UserController extends Controller
 
             if (! User::validateAge($user)) 
                 $this->app->flashNow('error', 'Age must be between 0 and 150.');
+            else if(!empty($email) && !User::validateEmail($user))
+                $this->app->flashNow('error', "Email isn't valid.");
             else 
             {
                 $user->save();

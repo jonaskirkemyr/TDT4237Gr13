@@ -4,8 +4,8 @@
 
 <h2>User</h2>
 
-{{ flash.info|raw }} <br />
-{{ flash.error|raw }} <br />
+{{ flash.info }} <br />
+{{ flash.error }} <br />
 
 {% if user %}
     <table>
@@ -16,10 +16,10 @@
             <th>Age</th>
         </tr>
             <tr>
-            <td>{{ user.username|raw }}</td>
-            <td>{{ user.email|raw }}</td>
-            <td>{{ user.bio|raw }}</td>
-            <td>{{ user.age|raw }}</td>
+            <td>{{ user.username }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.bio }}</td>
+            <td>{{ user.age }}</td>
         </tr>
     </table>
 {% else %}

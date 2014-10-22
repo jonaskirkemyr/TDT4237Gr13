@@ -2,11 +2,13 @@
 
 namespace tdt4237\webapp\controllers;
 
+use tdt4237\webapp\models\User;
 use tdt4237\webapp\models\Movie;
 use tdt4237\webapp\models\MovieReview;
 use tdt4237\webapp\Auth;
 
 use tdt4237\webapp\Security;
+use tdt4237\webapp\StringFunc;
 
 class MovieController extends Controller
 {
@@ -69,7 +71,14 @@ class MovieController extends Controller
         $author = Security::xss($request->post('author'));
         $text = Security::xss($request->post('text'));
 
+        //shortens text before adding to db, don't want db to handle this (?)
+        
+        $author=(isset($_SESSION["user"]))?User::findByUser($_SESSION["user"])->getUserName():StringFunc::shrtn($author);
+        $text=StringFunc::shrtn($text,500);
+
         $review = MovieReview::makeEmpty();
+
+
         $review->setAuthor($author);
         $review->setText($text);
         $review->setMovieId($id);

@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<h2>Login</h2>
+<h2>Forgot Password</h2>
 
 {{ flash.error|raw }} <br />
 
@@ -10,13 +10,10 @@
 
 <label>Username: </label>
 <input type="text" name="user"  required> <br />
-<label>Password: </label>
-<input type="password" name="pass" required> <br />
 
 <input type='hidden' name='{{csrf.id}}' value='{{csrf.value}}'/>
 <label></label>
-<input type="submit" name="submit" value="Log in">
+<input type="submit" name="submit" value="Submit">
 </form>
 
-<a href="{{ urlFor('forgotPw') }}">Forgot password</a>
 {% endblock %}

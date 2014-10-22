@@ -16,7 +16,7 @@ class Sql
      * Create tables.
      */
     static function up() {
-        $q1 = "CREATE TABLE users (id INTEGER PRIMARY KEY, user VARCHAR(50), pass VARCHAR(60), email varchar(50), age varchar(50), bio varhar(50), isadmin INTEGER);";
+        $q1 = "CREATE TABLE users (id INTEGER PRIMARY KEY, user VARCHAR(50), pass CHAR(60), email varchar(50) UNIQUE, age INTEGER(3), bio varchar(50), isadmin BOOLEAN);";//change pw from varchar to char (FASTER :) )
         $q4 = "CREATE TABLE movies (id INTEGER PRIMARY KEY, name VARVHAR(50), imageurl VARCHAR(100) );";
         $q5 = "CREATE TABLE moviereviews (id INTEGER PRIMARY KEY, movieid INTEGER, author VARVHAR(50), text VARCHAR(500) );";
 

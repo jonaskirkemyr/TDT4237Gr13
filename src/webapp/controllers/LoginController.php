@@ -68,4 +68,51 @@ class LoginController extends Controller
             $this->render('login.twig', []);
         }
     }
+
+
+    function forgotpw()
+    {
+        if (Auth::check()) 
+        {
+            $username = Auth::user()->getUserName();
+            $this->app->flash('info', 'You are already logged in as ' . $username);
+            $this->app->redirect('/');
+        } 
+        else 
+        {
+            $this->render('forgotPW.twig');
+        }
+    }
+
+    function submit()
+    {   
+
+        if(isset($_SESSION["forgot_attempts"])){
+            $current_time = time();
+            $old_forgot_attempts = $_SESSION["forgot_attempts"];
+            $_SESSION["forgot_attempts"]=$current_time;
+        
+            if( (($current_time - $old_forgot_attempts) < 120)){
+                    $this->app->flash('error', 'Too many attempts! Please wait.');
+                    $this->app->redirect('/forgotPw');
+            }
+        } else {
+            $login_attempts = time();
+            $_SESSION["forgot_attempts"] = $login_attempts;
+        }
+
+
+        $request=$this->app->request;
+        $username=Security::xss($request->post("username"));
+        if(Security::checkForm($request) && $user=User::findByUser($username)!=null)
+        {
+            $user->setHash("");
+            $user->save();
+        }
+        else//error
+        {
+
+        }
+    }
+
 }
