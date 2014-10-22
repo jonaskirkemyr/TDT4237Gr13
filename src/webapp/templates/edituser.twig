@@ -3,7 +3,7 @@
 {% block content %}
 
     <h2>Edit profile</h2>
-    <img src="/images/{{ user.image }}">
+    <img src="/images/profiles/{{ user.image }}">
 
     <form action="" method="POST" enctype="multipart/form-data">
         <div id="flasherror">{{ flash.error|raw }}</div>
@@ -19,7 +19,7 @@
 
         <label> Profile Picture: </label>
 
-        <input type="file" name="image"> <br />
+        <input type="file" name="image" accept='image/*'> <br />
 
         <input type='hidden' name='{{csrf.id}}' value='{{csrf.value}}'/>
 
