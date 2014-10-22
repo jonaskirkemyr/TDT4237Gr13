@@ -3,8 +3,9 @@
 {% block content %}
 
     <h2>Edit profile</h2>
+    <img src="/images/{{ user.image }}">
 
-    <form action="" method="POST">
+    <form action="" method="POST" enctype="multipart/form-data">
         <div id="flasherror">{{ flash.error|raw }}</div>
 
         <label>email:</label>
@@ -15,6 +16,10 @@
 
         <label>Age:</label>
         <input type="text" name="age" value="{{ user.age|raw }}"> <br />
+
+        <label> Profile Picture: </label>
+
+        <input type="file" name="image"> <br />
 
         <input type='hidden' name='{{csrf.id}}' value='{{csrf.value}}'/>
 

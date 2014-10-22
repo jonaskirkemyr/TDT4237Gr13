@@ -8,7 +8,7 @@ use PDO;
 class User
 {
     const INSERT_QUERY = "INSERT INTO users(user, pass, email, age, bio, isadmin) VALUES(:user, :pass, :email , :age , :bio, :isadmin);";
-    const UPDATE_QUERY = "UPDATE users SET email=:email, age=:age, bio=:bio, isadmin=:isadmin WHERE id=:id";
+    const UPDATE_QUERY = "UPDATE users SET email=:email, age=:age, bio=:bio, isadmin=:isadmin, image=:image WHERE id=:id";
     const FIND_BY_NAME = "SELECT * FROM users WHERE user=:user";
     const DEL_USER     = "DELETE FROM users WHERE user=:user";
 
@@ -22,6 +22,7 @@ class User
     protected $bio = 'Bio is empty.';
     protected $age;
     protected $isAdmin = 0;
+    protected $image;
 
     static $app;
 
@@ -29,7 +30,7 @@ class User
     {
     }
 
-    static function make($id, $username, $hash, $email, $bio, $age, $isAdmin)
+    static function make($id, $username, $hash, $email, $bio, $age, $isAdmin, $image)
     {
         $user = new User();
         $user->id = $id;
@@ -39,6 +40,7 @@ class User
         $user->bio = $bio;
         $user->age = $age;
         $user->isAdmin = $isAdmin;
+        $user->image = $image;
 
         return $user;
     }
@@ -65,7 +67,7 @@ class User
                     ":email"    =>  $this->email,
                     ":age"      =>  $this->age,
                     ":bio"      =>  $this->bio,
-                    ":isadmin"  =>  $this->isAdmin
+                    ":isadmin"  =>  $this->isAdmin,
                         );
 
         } 
@@ -78,8 +80,9 @@ class User
                     ":age"      =>  $this->age,
                     ":bio"      =>  $this->bio,
                     ":isadmin"  =>  $this->isAdmin,
+                    ":image"    =>  $this->image,
                     ":id"       =>  $this->id
-                    
+
                         );
         }
 
@@ -118,6 +121,11 @@ class User
         return $this->age;
     }
 
+    function getImage()
+    {
+        return $this->image;
+    }
+
     function isAdmin()
     {
         return $this->isAdmin === "1";
@@ -151,6 +159,11 @@ class User
     function setAge($age)
     {
         $this->age = $age;
+    }
+
+    function setImage($image)
+    {
+        $this->image=$image;
     }
 
     /**
@@ -258,6 +271,7 @@ class User
             $row['email'],
             $row['bio'],
             $row['age'],
+            $row['image'],
             $row['isadmin']
         );
     }

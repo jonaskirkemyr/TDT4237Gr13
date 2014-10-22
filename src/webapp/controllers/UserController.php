@@ -123,13 +123,28 @@ class UserController extends Controller
             $email=Security::xss($request->post('email'));
             $bio=Security::xss($request->post('bio'));
             $age=Security::xss($request->post('age'));
+            
+            $uploadImage = 0;
+            if(!empty($_FILES['image']['name'])){
+                $target_dir = "web/images/";
+                $file = explode(".", $_FILES['image']['name']);
+                $extension  = end($file);
+                $target_dir = $target_dir . $user->getId() . "." . $extension;
+                $user->setImage(Security::xss($user->getId() . "." . $extension));  
+                $uploadImage = 1; 
+            }
 
             $user->setEmail($email);
             $user->setBio($bio);
             $user->setAge($age);
 
-            if (! User::validateAge($user)) 
+
+            if (! User::validateAge($user)) {
                 $this->app->flashNow('error', 'Age must be between 0 and 150.');
+            } 
+            elseif($uploadImage && !move_uploaded_file($_FILES["image"]["tmp_name"], $target_dir)){
+                $this->app->flashNow('error', 'Error in image upload.');
+            }
             else 
             {
                 $user->save();
