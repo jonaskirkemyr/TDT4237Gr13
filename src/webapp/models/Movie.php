@@ -49,10 +49,13 @@ class Movie
     static function find($id)
     {
         $prepare=self::$app->db->prepare(self::FIND_MOVIE,array(PDO::ATTR_CURSOR=>PDO::CURSOR_FWDONLY));
-        $prepare->execute(array(":id"=>$id));
-        $row=$prepare->fetch(PDO::FETCH_ASSOC);
-        
-        return self::makeFromRow($row);
+        if($prepare->execute(array(":id"=>$id)))
+        {
+            $row=$prepare->fetch(PDO::FETCH_ASSOC);
+            
+            return self::makeFromRow($row);
+        }
+        return null;
     }
 
     /**

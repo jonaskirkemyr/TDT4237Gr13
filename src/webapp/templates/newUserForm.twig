@@ -4,15 +4,15 @@
 
 <h2>New user</h2>
 
-<b>{{ flash.info|raw }}</b> <br />
-<b>{{ flash.error|raw }}</b> <br />
+<b>{{ flash.info }}</b> <br />
+<b>{{ flash.error }}</b> <br />
 
 <form action="" method="POST">
 
 <label>Username: </label>
-<input type="text" name="user" value="{{ username|raw }}" pattern=".{3,20}" title="Username must be between 3 - 20 characters" required> <br />
+<input type="text" name="user" value="{{ username|e }}" pattern=".{3,20}" title="Username must be between 3 - 20 characters" required> <br />
 <label>Password: </label>
-<input type="password" name="pass"> <br />
+<input type="password" name="pass" required> <br />
 
 <input type='hidden' name='{{csrf.id}}' value='{{csrf.value}}'/>
 

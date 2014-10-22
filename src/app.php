@@ -36,6 +36,10 @@ $app->get('/', $ns . 'IndexController:index');
 $app->get('/login', $ns . 'LoginController:index')->name('login');
 $app->post('/login', $ns . 'LoginController:login');
 
+$app->get("/forgotPW",$ns."LoginController:forgotpw")->name("forgotPw");
+$app->post("/forgotPW",$ns."LoginController:submit");
+
+
 // New user
 $app->get('/user/new', $ns . 'UserController:index')->name('newuser');
 $app->post('/user/new', $ns . 'UserController:create');

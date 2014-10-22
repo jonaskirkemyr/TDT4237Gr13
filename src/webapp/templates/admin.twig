@@ -18,10 +18,10 @@
 
     {% for user in users %}
         <tr>
-            <td>{{ user.id|raw }}</td>
-            <td><a href="/user/{{ user.username|raw }}">{{ user.username|raw }}</a></td>
-            <td><button type='submit' name='delUser' value='{{user.username|raw}}'>Delete this user</button></td>
-            <!--<td><a href="/admin/delete/{{ user.username|raw }}">Delete this user</a></td>-->
+            <td>{{ user.id }}</td>
+            <td><a href="/user/{{ user.username }}">{{ user.username }}</a></td>
+            <td><button type='submit' name='delUser' value='{{user.username}}'>Delete this user</button></td>
+            <!--<td><a href="/admin/delete/{{ user.username }}">Delete this user</a></td>-->
         </tr>
     {% endfor %}
     </table>

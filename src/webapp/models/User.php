@@ -8,7 +8,7 @@ use PDO;
 class User
 {
     const INSERT_QUERY = "INSERT INTO users(user, pass, email, age, bio, isadmin) VALUES(:user, :pass, :email , :age , :bio, :isadmin);";
-    const UPDATE_QUERY = "UPDATE users SET email=:email, age=:age, bio=:bio, isadmin=:isadmin, image=:image WHERE id=:id";
+    const UPDATE_QUERY = "UPDATE users SET email=:email, age=:age, bio=:bio, isadmin=:isadmin, image=:image, pass=:hash WHERE id=:id";
     const FIND_BY_NAME = "SELECT * FROM users WHERE user=:user";
     const DEL_USER     = "DELETE FROM users WHERE user=:user";
 
@@ -80,6 +80,7 @@ class User
                     ":age"      =>  $this->age,
                     ":bio"      =>  $this->bio,
                     ":isadmin"  =>  $this->isAdmin,
+                    ":hash"     =>  $this->hash
                     ":image"    =>  $this->image,
                     ":id"       =>  $this->id
 
@@ -208,6 +209,7 @@ class User
             array_push($validationErrors, 'Username is already taken');
         }
 
+
         return $validationErrors;
     }
 
@@ -215,10 +217,19 @@ class User
     {
         $age = $user->getAge();
 
-        if ($age >= 0 && $age <= 150) {
+        if ($age >= 0 && $age <= 150 && is_numeric($age)) {
             return true;
         }
 
+        return false;
+    }
+
+
+    static function validateEmail(User $user)
+    {
+        $email=$user->getEmail();
+        if(filter_var($email,FILTER_VALIDATE_EMAIL))
+            return true;
         return false;
     }
 

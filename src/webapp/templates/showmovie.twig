@@ -20,9 +20,9 @@
         {% endfor %}
 
         <form action="" method="POST">
-            <b>Author:</b><input type="text" name="author"><br>
+            <b>Author:</b><input type="text" name="author" pattern=".{3,20}" title="Author name must be between 3 - 20 characters"><br>
 
-            <textarea cols="40" rows="10" name="text"></textarea>
+            <textarea cols="40" rows="10" name="text" title="Need to write a review to save it.." required></textarea>
 
 
             <input type='hidden' name='{{ csrf.id }}' value='{{ csrf.value }}'/>
