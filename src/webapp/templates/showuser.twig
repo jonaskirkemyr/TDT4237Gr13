@@ -8,7 +8,9 @@
 {{ flash.error }} <br />
 
 {% if user %}
+    {% if user.getImage is not empty %}
     <img src="/images/profiles/{{ user.image }}">
+    {% endif %}
     <table>
         <tr>
             <th>Username</th>
@@ -18,12 +20,16 @@
         </tr>
             <tr>
             <td>{{ user.username }}</td>
+            {% if isLoggedIn %}
             <td>{{ user.email }}</td>
+
+            {% else %}
+             <td>{{ user.email(true) }}</td>
+            {% endif %}
             <td>{{ user.bio }}</td>
             <td>{{ user.age }}</td>
         </tr>
     </table>
-
 {% else %}
     Could not find user.
 {% endif %}

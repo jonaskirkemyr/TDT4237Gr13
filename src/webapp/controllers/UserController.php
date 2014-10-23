@@ -122,6 +122,17 @@ class UserController extends Controller
             $email=Security::xss($request->post('email'));
             $bio=Security::xss($request->post('bio'));
             $age=Security::xss($request->post('age'));
+
+
+            $pw1=Security::xss($request->post("pw1"));
+            $pw2=Security::xss($request->post("pw2"));
+            $pwerror=true;
+            if((!empty($pw1) && !empty($pw2)) && $pw1==$pw2  && strlen($pw1)>=self::MIN_PW_LENGTH)
+            {
+                $user->setHash(Hash::make($pw1));
+                $pwerror=false;
+            }
+
             
             // Code for image upload.
             $uploadImage = 0;
@@ -140,7 +151,7 @@ class UserController extends Controller
                             $imageFail = 1;
                         } else {
                             // If acceptable, copy it over with our own name to avoid problems.
-                            $target_dir = "web/images/profiles/";
+                            $target_dir = "images/profiles/";
                             $file = explode(".", $_FILES['image']['name']);
                             $extension  = end($file);
                             $target_dir = $target_dir . $user->getUserName() . "." . $extension;
@@ -155,15 +166,17 @@ class UserController extends Controller
             $user->setBio($bio);
             $user->setAge($age);
 
-            if (! User::validateAge($user)) {
+            if (! User::validateAge($user))
                 $this->app->flashNow('error', 'Age must be between 0 and 150.');
             else if(!empty($email) && !User::validateEmail($user))
                 $this->app->flashNow('error', "Email isn't valid.");
-            elseif($uploadImage && !move_uploaded_file($_FILES["image"]["tmp_name"], $target_dir)){
+            else if($uploadImage && !move_uploaded_file($_FILES["image"]["tmp_name"], $target_dir)){
                 $this->app->flashNow('error', 'Error in image upload.');
-            } elseif($imageFail){
+            } else if($imageFail){
                 $this->app->flashNow('error', 'Error in image upload. Image must be small and in PNG or JPEG format.');
             }
+            else if((!empty($pw1) || !empty($pw2)) && $pwerror)
+                $this->app->flashNow('error', "Couldn't change password");
             else 
             {
                 $user->save();
