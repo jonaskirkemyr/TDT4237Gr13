@@ -34,7 +34,7 @@ class Security
     static function tokenValue()//value to be used in form
     {
     	if(!isset($_SESSION["rvalue"]))
-    		$_SESSION["rvalue"]=base64_encode(openssl_random_pseudo_bytes(32));
+    		$_SESSION["rvalue"]=self::randomToken();
     	return $_SESSION["rvalue"];
     }
 
@@ -67,6 +67,13 @@ class Security
     {
     	unset($_SESSION["rtoken"]);
     	unset($_SESSION["rvalue"]);
+    }
+
+
+
+    static function randomToken($length=32)
+    {
+        return base64_encode(openssl_random_pseudo_bytes($length));
     }
 
 }

@@ -69,6 +69,7 @@ class MovieReview
     {
         $movieId = $this->movieId;
         $author = $this->author;
+        if(empty($author))$author="ANONYMOUS";
         $text = $this->text;
 
         $prepare=null;

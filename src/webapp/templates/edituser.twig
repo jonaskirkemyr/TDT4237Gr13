@@ -24,6 +24,14 @@
 
         <input type='hidden' name='{{csrf.id}}' value='{{csrf.value}}'/>
 
+        <br><br>
+        <label>Change password:</label>
+        <input type="password" name="pw1"/>
+        <label>Reenter password:</label>
+        <input type="password" name="pw2"/><br><br>
+
+        <label></label>
+
         <input type="submit" name="submit" value="Save profile">
     </form>
 {% endblock %}

@@ -40,7 +40,7 @@ class Sql
         $q2 = "INSERT INTO users(user, pass) VALUES ('bob', '$hash2')";
         $q3 = "INSERT INTO users(user, pass) VALUES ('mike', '$hash3')";
 
-        self::$pdo->exec($q1);
+        self::$pdo->exec($q1); 
         self::$pdo->exec($q2);
         self::$pdo->exec($q3);
 

@@ -80,7 +80,7 @@ class User
                     ":age"      =>  $this->age,
                     ":bio"      =>  $this->bio,
                     ":isadmin"  =>  $this->isAdmin,
-                    ":hash"     =>  $this->hash
+                    ":hash"     =>  $this->pass,
                     ":image"    =>  $this->image,
                     ":id"       =>  $this->id
 
@@ -107,8 +107,10 @@ class User
         return $this->pass;
     }
 
-    function getEmail()
+    function getEmail($censor=false)
     {
+        if($censor)
+            return str_replace("@","<>",$this->email);
         return $this->email;
     }
 
