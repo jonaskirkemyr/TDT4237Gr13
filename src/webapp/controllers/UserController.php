@@ -47,6 +47,10 @@ class UserController extends Controller
 
         $validationErrors = User::validate($user);
 
+
+
+
+
         if (sizeof($validationErrors) > 0 || !Security::checkForm($request) || strlen($pass)<self::MIN_PW_LENGTH) 
         {
             if(sizeof($validationErrors) > 0)
@@ -64,6 +68,19 @@ class UserController extends Controller
         } 
         else 
         {
+            if(isset($_SESSION["newUser"])){
+                $current_time = time();
+                $old_login_attempts = $_SESSION["newUser"];
+                $new_login_attempts = array($current_time);
+                $_SESSION["newUser"] = $new_login_attempts;
+                if( (($current_time - $old_login_attempts[0]) < 60) ){
+                        $this->app->flash('error', 'Please wait a minute before creating a new user!');
+                        $this->app->redirect('/user/new');
+                }
+            } else {
+                $create_user = array(time());
+                $_SESSION["newUser"] = $create_user;
+            }
             $user->save();
             $this->app->flash('info', 'Thanks for creating a user. Now log in.');
             $this->app->redirect('/login');
