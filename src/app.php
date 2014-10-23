@@ -4,10 +4,14 @@
 require_once __DIR__ . '/../vendor/autoload.php';
 $app = new \Slim\Slim([
     'templates.path' => __DIR__.'/webapp/templates/',
-    'debug' => true,
+    'debug' => false,
     'view' => new \Slim\Views\Twig(),
     'log.level' => \Slim\Log::DEBUG
 ]);
+
+$app->error(function (\Exception $e) {
+    printf("An error has occurred!");
+});
 
 $view = $app->view();
 $view->parserExtensions = array(
@@ -20,8 +24,6 @@ try {
     // Set errormode to exceptions
     $app->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch(PDOException $e) {
-    //print_r($e);
-    echo $e->getMessage();
     exit();
 }
 

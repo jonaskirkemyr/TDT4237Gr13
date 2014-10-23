@@ -1,6 +1,6 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 'on');
+error_reporting(E_ERROR);
+ini_set('display_errors', 'off');
 
 if (! extension_loaded('openssl')) {
     die('You must enable the openssl extension.');
