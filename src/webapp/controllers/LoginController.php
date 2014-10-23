@@ -109,8 +109,9 @@ class LoginController extends Controller
         $username=Security::xss($request->post("user"));
         $user=User::findByUser($username);
 
-        if(Security::checkForm($request) && $user!=null)
+        if(Security::checkForm($request) && $user!=null && !empty($user->getEmail()))
         {
+    
             $pw=Security::randomToken();
 
             $user->setHash(Hash::make($pw));

@@ -61,11 +61,11 @@ class AdminController extends Controller
         $request = $this->app->request;
         $this->redirectUser();
 
-        if($request->post("delUser")===null || !Security::checkForm($request)) $this->app->redirect('/login');
+        if(!isset($request->post("delUser") || empty($request->post("delUser") || !Security::checkForm($request)) $this->app->redirect('/login');
 
         $username=Security::xss($request->post("delUser"));
 
-        if($username!=User::findByUser($_SESSION["user"])->getUserName() && User::deleteByUsername($username) === 1) 
+        if($username!=User::findByUser($_SESSION["user"])->getUserName() && User::deleteByUsername($username) == 1) 
             $this->app->flash('info', "Sucessfully deleted '$username'");
         else
             $this->app->flash('info', "An error ocurred. Unable to delete user.");
