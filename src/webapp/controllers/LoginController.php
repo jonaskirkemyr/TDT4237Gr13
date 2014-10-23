@@ -109,9 +109,16 @@ class LoginController extends Controller
         $username=Security::xss($request->post("user"));
         $user=User::findByUser($username);
 
-        if(Security::checkForm($request) && $user!=null && !empty($user->getEmail()))
+        if(Security::checkForm($request) && $user!=null)
         {
-    
+            if(empty($user->getEmail()))
+            {
+                $this->app->flash("info", "No e-mail found");
+                $this->app->redirect("/forgotPW");
+                return;
+            }
+
+
             $pw=Security::randomToken();
 
             $user->setHash(Hash::make($pw));
