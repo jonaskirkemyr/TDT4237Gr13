@@ -61,7 +61,7 @@ class AdminController extends Controller
         $request = $this->app->request;
         $this->redirectUser();
 
-        if(!isset($request->post("delUser") || empty($request->post("delUser") || !Security::checkForm($request)) $this->app->redirect('/login');
+        if($request->post("delUser")===null || empty($request->post("delUser")) || !Security::checkForm($request)) $this->app->redirect('/login');
 
         $username=Security::xss($request->post("delUser"));
 
