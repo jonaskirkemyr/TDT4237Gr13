@@ -168,7 +168,7 @@ class UserController extends Controller
                             $imageFail = 1;
                         } else {
                             // If acceptable, copy it over with our own name to avoid problems.
-                            $target_dir = "images/profiles/";
+                            $target_dir = "web/images/profiles/";
                             $file = explode(".", $_FILES['image']['name']);
                             $extension  = end($file);
                             $target_dir = $target_dir . $user->getUserName() . "." . $extension;
