@@ -284,8 +284,8 @@ class User
             $row['email'],
             $row['bio'],
             $row['age'],
-            $row['image'],
-            $row['isadmin']
+            $row['isadmin'],
+            $row['image']
         );
     }
 }
